@@ -5,18 +5,24 @@
     <input type="text" @input="bindIframeText('text-1', $event)" v-model="bindedText['text-1']" />
     <p>{{ bindedText['text-1'] }}</p>
     <iframe ref="iframe"></iframe>
+    <IframeViewer
+      :data="iframeViewerData"
+      v-if="isDisplay"
+    />
+    <button @click="display">display</button>
   </div>
 </template>
 
 <script>
 import IframeBinder from "./components/IframeBinder";
 import templateString from "../htmlTemplate/1";
+import IframeViewer from "./components/IframeViewer";
 
 export default {
   name: "App",
   mixins: [IframeBinder],
   components: {
-    IframeBinder
+    IframeViewer
   },
   data () {
     return {
@@ -26,7 +32,22 @@ export default {
       bindedText: {
         'text-1': 'asdf'
       },
-      iframeSrc: templateString
+      iframeSrc: templateString,
+      isDisplay: false
+    }
+  },
+  computed: {
+    iframeViewerData () {
+      return {
+        bindedImg: this.bindedImg,
+        bindedText: this.bindedText,
+        iframeSrc: this.iframeSrc
+      }
+    }
+  },
+  methods: {
+    display () {
+      this.isDisplay = true
     }
   }
 };

@@ -2,7 +2,8 @@
   export default {
     data () {
       return {
-        iframeDocument: null,
+        bindedImg: {},
+        bindedText: {},
         iframeSrc: `
           <!doctype html>
           <html>
@@ -10,6 +11,7 @@
             </body>
           </html>
         `,
+        iframeDocument: null,
         onLoadMessageScript: `
           <script>
             window.parent.postMessage({
@@ -43,7 +45,7 @@
       handleMessage (event) {
         const data = event.data
         switch (data.cmd) {
-          case 'iframeLoaded':
+          case 'iframeLoaded':            
             this.initBindedText()
             this.initBindedImg()
             break
