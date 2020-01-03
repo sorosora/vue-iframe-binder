@@ -54,12 +54,14 @@
         if (!this.iframeDocument) {
           return;
         }
+        this.bindedText[textId] = value
         this.iframeDocument.querySelector(`#${textId}`).innerText = value
       },
       setBindedImg (imgId, value) {
         if (!this.iframeDocument) {
           return;
         }
+        this.bindedImg[imgId] = value
         this.iframeDocument.querySelector(`#${imgId}`).setAttribute("src", value)
       },
       bindIframeText (textId, e) {

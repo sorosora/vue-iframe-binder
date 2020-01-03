@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <input type="file" @input="bindIframeImg('img-1', $event)" accept="image/gif, image/jpeg, image/png" />
+    <p>{{ bindedImg['img-1'] }}</p>
     <input type="text" @input="bindIframeText('text-1', $event)" v-model="bindedText['text-1']" />
+    <p>{{ bindedText['text-1'] }}</p>
     <iframe ref="iframe"></iframe>
   </div>
 </template>
