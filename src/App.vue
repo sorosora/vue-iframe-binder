@@ -2,7 +2,7 @@
   <div id="app">
     <input type="file" @input="bindIframeImg('img-1', $event)" accept="image/gif, image/jpeg, image/png" />
     <input type="text" @input="bindIframeText('text-1', $event)" v-model="bindedText['text-1']" />
-    <iframe :srcdoc="iframeSrcdoc" ref="iframe"></iframe>
+    <iframe ref="iframe"></iframe>
   </div>
 </template>
 

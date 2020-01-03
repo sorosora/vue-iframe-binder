@@ -3,6 +3,13 @@
     data () {
       return {
         iframeDocument: null,
+        iframeSrc: `
+          <!doctype html>
+          <html>
+            <body>
+            </body>
+          </html>
+        `,
         onLoadMessageScript: `
           <script>
             window.parent.postMessage({
@@ -17,22 +24,26 @@
       }
     },
     computed: {
-      iframeSrcdoc () {
+      scriptAddedIframeSrc () {
         const closedBodyIndex = this.iframeSrc.indexOf('</body>')
-        const scriptAddedSrcdoc = this.iframeSrc.slice(0, closedBodyIndex) + this.onLoadMessageScript + this.iframeSrc.slice(closedBodyIndex)
-        return scriptAddedSrcdoc
+        const scriptAddedSrc = this.iframeSrc.slice(0, closedBodyIndex) + this.onLoadMessageScript + this.iframeSrc.slice(closedBodyIndex)
+        return scriptAddedSrc
       }
     },
     methods: {
-      setIframeDocument () {
+      initIframeDocument () {
         const iframe = this.$refs.iframe
+        if (!iframe) {
+          return;
+        }
         this.iframeDocument = iframe.contentDocument ? iframe.contentDocument : iframe.contentWindow.document;
+        this.iframeDocument.open()
+        this.iframeDocument.write(this.scriptAddedIframeSrc)
       },
       handleMessage (event) {
         const data = event.data
         switch (data.cmd) {
           case 'iframeLoaded':
-            this.setIframeDocument()
             this.initBindedText()
             this.initBindedImg()
             break
@@ -78,6 +89,7 @@
     },
     mounted () {
       window.addEventListener('message', this.handleMessage)
+      this.initIframeDocument()
     }
   }
 </script>
