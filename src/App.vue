@@ -1,16 +1,21 @@
-<template>
-  <div id="app">
-    <input type="file" @input="bindIframeImg('img-1', $event)" accept="image/gif, image/jpeg, image/png" />
-    <p>{{ bindedImg['img-1'] }}</p>
-    <input type="text" @input="bindIframeText('text-1', $event)" v-model="bindedText['text-1']" />
-    <p>{{ bindedText['text-1'] }}</p>
-    <iframe ref="iframe"></iframe>
-    <IframeViewer
-      :data="iframeViewerData"
-      v-if="isDisplay"
-    />
-    <button @click="display">display</button>
-  </div>
+<template lang="pug">
+  #app
+    .row
+      | 第一張圖：
+      input(type='file', @input="bindIframeImg('img-1', $event)", accept='image/gif, image/jpeg, image/png')
+      p ，值：{{ bindedImg['img-1'] }}
+    .row
+      | 第一段文字：
+      input(type='text', @input="bindIframeText('text-1', $event)", v-model="bindedText['text-1']")
+      p ，值：{{ bindedText['text-1'] }}
+    button(@click='toggleDisplay') {{ isDisplay ? "銷毀" : "複製" }}
+    .iframe-container
+      .iframe-wrapper
+        | 即時預覽
+        iframe(ref='iframe')
+      .iframe-wrapper
+        | 複製視窗(不即時更新，預備做放大視窗)
+        iframeviewer(:data='iframeViewerData', v-if='isDisplay')
 </template>
 
 <script>
@@ -46,14 +51,14 @@ export default {
     }
   },
   methods: {
-    display () {
-      this.isDisplay = true
+    toggleDisplay () {
+      this.isDisplay = !this.isDisplay
     }
   }
 };
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -61,5 +66,30 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.iframe-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.iframe-container {
+  display: flex;
+
+  .iframe-wrapper {
+    flex: 1 1 50%;
+    padding: 10px;
+  }
+}
+
+iframe {
+  height: 700px;
 }
 </style>
