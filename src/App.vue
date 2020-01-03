@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <img width="25%" src="./assets/logo.png">
-    <HelloWorld msg="Hello Vue in CodeSandbox!" />
     <input type="file" @input="bindIframeImg('img-1', $event)" accept="image/gif, image/jpeg, image/png" />
     <input type="text" @input="bindIframeText('text-1', $event)" v-model="bindedText['text-1']" />
     <iframe :srcdoc="iframeSrcdoc" ref="iframe"></iframe>
@@ -9,14 +7,13 @@
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
 import IframeBinder from "./components/IframeBinder";
 
 export default {
   name: "App",
   mixins: [IframeBinder],
   components: {
-    HelloWorld, IframeBinder
+    IframeBinder
   },
   data () {
     return {
