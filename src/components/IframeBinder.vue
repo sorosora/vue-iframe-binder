@@ -2,7 +2,6 @@
   export default {
     data () {
       return {
-        iframe: null,
         iframeDocument: null,
         onLoadMessageScript: `
           <script>
@@ -34,25 +33,47 @@
         switch (data.cmd) {
           case 'iframeLoaded':
             this.setIframeDocument()
+            this.initBindedText()
+            this.initBindedImg()
             break
           default:
         }
       },
-      bindIframeText (textId, e) {
-        const input = e.target
-        if (this.iframeDocument) {
-          this.iframeDocument.querySelector(`#${textId}`).innerText = input.value
+      setBindedText (textId, value) {
+        if (!this.iframeDocument) {
+          return;
         }
+        this.iframeDocument.querySelector(`#${textId}`).innerText = value
+      },
+      setBindedImg (imgId, value) {
+        if (!this.iframeDocument) {
+          return;
+        }
+        this.iframeDocument.querySelector(`#${imgId}`).setAttribute("src", value)
+      },
+      bindIframeText (textId, e) {
+        const { target: { value } } = e
+        this.setBindedText(textId, value);
       },
       bindIframeImg (imgId, e) {
         const input = e.target
-        if(this.iframeDocument && input.files && input.files[0]){
+        if(input.files && input.files[0]){
           const reader = new FileReader();
           reader.onload = (readerEvent) => {
-            this.iframeDocument.querySelector(`#${imgId}`).setAttribute("src", readerEvent.target.result)
+            this.setBindedImg(imgId, readerEvent.target.result)
           }
           reader.readAsDataURL(input.files[0]);
         }
+      },
+      initBindedText () {
+        Object.keys(this.bindedText).forEach((key) => {
+          this.setBindedText(key, this.bindedText[key])
+        })
+      },
+      initBindedImg () {
+        Object.keys(this.bindedImg).forEach((key) => {
+          this.setBindedImg(key, this.bindedImg[key])
+        })
       }
     },
     mounted () {

@@ -3,7 +3,7 @@
     <img width="25%" src="./assets/logo.png">
     <HelloWorld msg="Hello Vue in CodeSandbox!" />
     <input type="file" @input="bindIframeImg('img-1', $event)" accept="image/gif, image/jpeg, image/png" />
-    <input type="text" @input="bindIframeText('text-1', $event)" />
+    <input type="text" @input="bindIframeText('text-1', $event)" v-model="bindedText['text-1']" />
     <iframe :srcdoc="iframeSrcdoc" ref="iframe"></iframe>
   </div>
 </template>
@@ -20,6 +20,12 @@ export default {
   },
   data () {
     return {
+      bindedImg: {
+        'img-1': 'https://picsum.photos/200/300'
+      },
+      bindedText: {
+        'text-1': 'asdf'
+      },
       iframeSrc: `
     <!doctype html>
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
