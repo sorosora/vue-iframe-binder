@@ -8,26 +8,24 @@
       | 第一段文字：
       input(type='text', @input="bindIframeText('text-1', $event)", :value="bindedText['text-1']")
       p ，值：{{ bindedText['text-1'] }}
-    button(@click='toggleDisplay') {{ isDisplay ? "銷毀" : "複製" }}
+    button(@click='toggleZoomIn') {{ isZoomIn ? "銷毀" : "放大" }}
     .iframe-container
       .iframe-wrapper
         | 即時預覽
         iframe(ref='iframe')
-      .iframe-wrapper
-        | 複製視窗(不即時更新，預備做放大視窗)
-        iframe-viewer(:data='iframeViewerData', v-if='isDisplay')
+    zoom-in-modal(:active="isZoomIn", :onClose="toggleZoomIn", :data="iframeViewerData")
 </template>
 
 <script>
 import IframeBinder from "./components/IframeBinder";
 import templateString from "../htmlTemplate/1";
-import IframeViewer from "./components/IframeViewer";
+import ZoomInModal from "./components/ZoomInModal";
 
 export default {
   name: "App",
   mixins: [IframeBinder],
   components: {
-    IframeViewer
+    ZoomInModal
   },
   data () {
     return {
@@ -38,7 +36,7 @@ export default {
         'text-1': 'asdf'
       },
       iframeSrc: templateString,
-      isDisplay: false
+      isZoomIn: false
     }
   },
   computed: {
@@ -51,14 +49,14 @@ export default {
     }
   },
   methods: {
-    toggleDisplay () {
-      this.isDisplay = !this.isDisplay
+    toggleZoomIn () {
+      this.isZoomIn = !this.isZoomIn
     }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -82,9 +80,11 @@ export default {
 
 .iframe-container {
   display: flex;
+  justify-content: center;
 
   .iframe-wrapper {
     flex: 1 1 50%;
+    max-width: 50%;
     padding: 10px;
   }
 }
