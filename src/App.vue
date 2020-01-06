@@ -8,11 +8,13 @@
       | 第一段文字：
       input(type='text', @input="bindIframeText('text-1', $event)", :value="bindedText['text-1']")
       p ，值：{{ bindedText['text-1'] }}
+    button(@click='toggleMobile') {{ isMobile ? "切換桌機" : "切換手機" }}
     button(@click='toggleZoomIn') {{ isZoomIn ? "銷毀" : "放大" }}
     .iframe-container
       .iframe-wrapper
-        | 即時預覽
-        iframe(ref='iframe')
+        | {{ isMobile ? "手機" : "桌機" }}即時預覽
+        responsive-wrapper(:breakpoint="isMobile ? 'mobile' : 'desktop'")
+          iframe(ref='iframe')
     zoom-in-modal(:active="isZoomIn", :onClose="toggleZoomIn", :data="iframeViewerData")
 </template>
 
@@ -20,12 +22,13 @@
 import IframeBinder from "./components/IframeBinder";
 import templateString from "../htmlTemplate/1";
 import ZoomInModal from "./components/ZoomInModal";
+import ResponsiveWrapper from "./components/ResponsiveWrapper";
 
 export default {
   name: "App",
   mixins: [IframeBinder],
   components: {
-    ZoomInModal
+    ZoomInModal, ResponsiveWrapper
   },
   data () {
     return {
@@ -36,7 +39,8 @@ export default {
         'text-1': 'asdf'
       },
       iframeSrc: templateString,
-      isZoomIn: false
+      isZoomIn: false,
+      isMobile: false
     }
   },
   computed: {
@@ -51,7 +55,10 @@ export default {
   methods: {
     toggleZoomIn () {
       this.isZoomIn = !this.isZoomIn
-    }
+    },
+    toggleMobile () {
+      this.isMobile = !this.isMobile
+    },
   }
 };
 </script>
@@ -90,6 +97,7 @@ export default {
 }
 
 iframe {
+  width: 100%;
   height: 700px;
 }
 </style>
