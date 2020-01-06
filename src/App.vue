@@ -6,7 +6,7 @@
       p ，值：{{ bindedImg['img-1'] }}
     .row
       | 第一段文字：
-      input(type='text', @input="bindIframeText('text-1', $event)", v-model="bindedText['text-1']")
+      input(type='text', @input="bindIframeText('text-1', $event)", :value="bindedText['text-1']")
       p ，值：{{ bindedText['text-1'] }}
     button(@click='toggleDisplay') {{ isDisplay ? "銷毀" : "複製" }}
     .iframe-container
@@ -15,7 +15,7 @@
         iframe(ref='iframe')
       .iframe-wrapper
         | 複製視窗(不即時更新，預備做放大視窗)
-        iframeviewer(:data='iframeViewerData', v-if='isDisplay')
+        iframe-viewer(:data='iframeViewerData', v-if='isDisplay')
 </template>
 
 <script>
