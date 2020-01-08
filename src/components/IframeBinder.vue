@@ -41,6 +41,7 @@
         this.iframeDocument = iframe.contentDocument ? iframe.contentDocument : iframe.contentWindow.document;
         this.iframeDocument.open()
         this.iframeDocument.write(this.scriptAddedIframeSrc)
+        this.iframeDocument.close()
       },
       handleMessage (event) {
         const data = event.data
